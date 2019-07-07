@@ -1,0 +1,23 @@
+[Desktop Entry]
+Name=Pale Moon Browser
+Icon=${SNAP}/meta/gui/mozicon128.png
+Actions=NewWindow;NewPrivateWindow;ProfileManager;NewInstance;
+Exec=palemoon %U
+Type=Application
+Comment=Firefox-based browser
+
+[Desktop Action NewWindow]
+Name=Open a New Window
+Exec=/home/yamiyukisenpai/Software/palemoon/palemoon --new-window %U
+
+[Desktop Action NewPrivateWindow]
+Name=Open a Private Window
+Exec=/home/yamiyukisenpai/Software/palemoon/palemoon --private-window %U
+
+[Desktop Action ProfileManager]
+Name=Open Profile Manager
+Exec=/home/yamiyukisenpai/Software/palemoon/palemoon --ProfileManager
+
+[Desktop Action NewInstance]
+Name=Open a New Instance
+Exec=/home/yamiyukisenpai/Software/palemoon/palemoon --new-instance
