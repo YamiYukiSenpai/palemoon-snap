@@ -9,6 +9,40 @@ grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 
 parts:
+  desktop-gtk:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: gtk
+    plugin: make
+    make-parameters: ["FLAVOR=gtk2"]
+    build-packages:
+      - libgtk2.0-dev
+      - libgtk-3-dev
+    stage-packages:
+      - libxkbcommon0  # XKB_CONFIG_ROOT
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - adwaita-icon-theme
+      - gnome-themes-standard
+      - shared-mime-info
+      - libgtk2.0-0
+      - libgtk-3-0
+      - libgdk-pixbuf2.0-0
+      - libglib2.0-bin
+      - libgtk2.0-bin
+      - libgtk-3-bin
+      - unity-gtk2-module
+      - unity-gtk3-module
+      - libappindicator3-1
+      - locales-all
+      - xdg-user-dirs
+      - ibus-gtk
+      - ibus-gtk3
+      - libibus-1.0-5
+    organize:
+      usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gtk-2.0: usr/lib/gtk-2.0
+      usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gtk-3.0: usr/lib/gtk-3.0
+
   palemoon:
     # See 'snapcraft plugins'
     plugin: dump
@@ -31,7 +65,9 @@ parts:
       #- python2.7
       #- python-dbus
       #- libstdc++-8-dev
-    stage-packages: [libfreetype6,libpng16-16,libfontconfig1,libxrender1,libasound2,libdbus-glib-1-2,libgtk2.0-0,libx11-xcb1,libxt6,unity-gtk2-module,ttf-ubuntu-font-family,libgdk-pixbuf2.0-0,libglib2.0-bin,locales-all]
+    after:
+      - desktop-gtk
+    stage-packages: [libfreetype6,libpng16-16,libfontconfig1,libxrender1,libasound2,libdbus-glib-1-2,libgtk2.0-0,libx11-xcb1,libxt6,unity-gtk2-module,ttf-ubuntu-font-family,libgdk-pixbuf2.0-0,libglib2.0-bin,locales-all,libgconf-2-4,libpulse0]
 
 plugs:
   gtk-2-engines:
@@ -53,10 +89,15 @@ plugs:
 
 apps:
   palemoon:
-    command: palemoon
+    command: desktop-launch $SNAP/palemoon
     plugs:
+      - alsa
+      - avahi-observe
       - cups-control
       - desktop
+      - camera
+      - mount-observe
+      - pulseaudio
       - desktop-legacy
       - gsettings
       - home
